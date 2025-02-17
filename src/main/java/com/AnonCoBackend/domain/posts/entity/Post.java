@@ -1,17 +1,15 @@
 package com.AnonCoBackend.domain.posts.entity;
 
+import com.AnonCoBackend.domain.posts.dto.PostReqDto;
+import com.AnonCoBackend.domain.utils.PwEncoder;
 import com.AnonCoBackend.domain.utils.Timestamp;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder
 public class Post extends Timestamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,4 +27,13 @@ public class Post extends Timestamp {
 
     @Column(nullable = false)
     private String content;
+
+    public static Post from(PostReqDto reqDto) {
+        return Post.builder()
+                .nickName(reqDto.getNickName())
+                .password(PwEncoder.encodePw(reqDto.getPassword()))
+                .title(reqDto.getTitle())
+                .content(reqDto.getContent())
+                .build();
+    }
 }
