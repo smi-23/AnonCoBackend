@@ -1,4 +1,4 @@
-package com.AnonCoBackend.domain.utils;
+package com.AnonCoBackend.utils;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

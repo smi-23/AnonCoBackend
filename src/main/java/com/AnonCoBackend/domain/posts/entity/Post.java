@@ -1,8 +1,8 @@
 package com.AnonCoBackend.domain.posts.entity;
 
 import com.AnonCoBackend.domain.posts.dto.PostReqDto;
-import com.AnonCoBackend.domain.utils.PwEncoder;
-import com.AnonCoBackend.domain.utils.Timestamp;
+import com.AnonCoBackend.utils.PwEncoder;
+import com.AnonCoBackend.utils.Timestamp;
 import jakarta.persistence.*;
 import lombok.*;
 

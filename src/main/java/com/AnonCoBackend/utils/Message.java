@@ -1,4 +1,4 @@
-package com.AnonCoBackend.domain.utils;
+package com.AnonCoBackend.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

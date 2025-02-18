@@ -3,7 +3,7 @@ package com.AnonCoBackend.domain.posts.controller;
 import com.AnonCoBackend.domain.posts.dto.PostReqDto;
 import com.AnonCoBackend.domain.posts.dto.PostResDto;
 import com.AnonCoBackend.domain.posts.service.PostService;
-import com.AnonCoBackend.domain.utils.Message;
+import com.AnonCoBackend.utils.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
