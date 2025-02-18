@@ -8,8 +8,9 @@ import lombok.*;
 
 @Entity
 @Getter
-@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Post extends Timestamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +36,14 @@ public class Post extends Timestamp {
                 .title(reqDto.getTitle())
                 .content(reqDto.getContent())
                 .build();
+    }
+
+    public void updatePost(PostReqDto reqDto) {
+        if (reqDto.getTitle() != null) {
+            this.title = reqDto.getTitle();
+        }
+        if (reqDto.getContent() != null) {
+            this.content = reqDto.getContent();
+        }
     }
 }
