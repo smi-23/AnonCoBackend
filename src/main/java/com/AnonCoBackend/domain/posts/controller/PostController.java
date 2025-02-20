@@ -17,32 +17,32 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
 
-    @PostMapping("/")
-    public ResponseEntity<Message> createPost(@RequestBody PostReqDto reqDto) {
-        PostResDto resDto = postService.createPost(reqDto);
+    @PostMapping("")
+    public ResponseEntity<Message> createPost(@RequestBody PostReqDto reqDto, @RequestParam("topicTitle") String topicTitle) {
+        PostResDto resDto = postService.createPost(reqDto, topicTitle);
         return new ResponseEntity<>(new Message(resDto.getId() + "번 게시글이 생성되었습니다.", resDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<Message> getAllPost() {
         List<PostResDto> resDtoList = postService.getAllPost();
         return new ResponseEntity<>(new Message("전체 게시글을 조회합니다.", resDtoList), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Message> getPost(@PathVariable Long id) {
+    public ResponseEntity<Message> getPost(@PathVariable("id") Long id) {
         PostResDto resDto = postService.getPost(id);
         return new ResponseEntity<>(new Message(id + "번 게시글을 조회합니다.", resDto), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Message> updatePost(@PathVariable Long id, @RequestBody PostReqDto reqDto) {
+    public ResponseEntity<Message> updatePost(@PathVariable("id") Long id, @RequestBody PostReqDto reqDto) {
         PostResDto resDto= postService.updatePost(id, reqDto);
         return new ResponseEntity<>(new Message(id + "번 게시글이 수정되었습니다.", resDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Message> deletePost(@PathVariable Long id) {
+    public ResponseEntity<Message> deletePost(@PathVariable("id") Long id) {
         postService.deletePost(id);
         return new ResponseEntity<>(new Message(id + "번 게시글이 삭제되었습니다.", null), HttpStatus.OK);
     }

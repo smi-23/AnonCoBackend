@@ -4,6 +4,8 @@ import com.AnonCoBackend.domain.posts.dto.PostReqDto;
 import com.AnonCoBackend.domain.posts.dto.PostResDto;
 import com.AnonCoBackend.domain.posts.entity.Post;
 import com.AnonCoBackend.domain.posts.repository.PostRepository;
+import com.AnonCoBackend.domain.topics.entity.Topic;
+import com.AnonCoBackend.domain.topics.repository.TopicRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,10 +18,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final TopicRepository topicRepository;
 
     @Transactional
-    public PostResDto createPost(PostReqDto reqDto) {
-        Post post = postRepository.save(Post.from(reqDto));
+    public PostResDto createPost(PostReqDto reqDto, String topicTitle) {
+        Topic topic = topicRepository.findByTitle(topicTitle).orElseThrow(() -> new IllegalArgumentException( "해당 토픽이 존재하지 않습니다."));
+        Post post = postRepository.save(Post.from(reqDto, topic));
         log.info("{}번 게시글 생성", post.getId());
         return PostResDto.from(post);
     }
