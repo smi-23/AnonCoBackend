@@ -29,12 +29,16 @@ public class Post extends Timestamp {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private String topic;
+
     public static Post from(PostReqDto reqDto) {
         return Post.builder()
                 .nickName(reqDto.getNickName())
                 .password(PwEncoder.encodePw(reqDto.getPassword()))
                 .title(reqDto.getTitle())
                 .content(reqDto.getContent())
+                .topic(reqDto.getTopic())
                 .build();
     }
 

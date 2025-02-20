@@ -8,4 +8,5 @@ public class PostReqDto {
     private String password;
     private String title;
     private String content;
+    private String topic;
 }
