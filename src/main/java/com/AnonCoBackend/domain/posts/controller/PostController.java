@@ -1,5 +1,6 @@
 package com.AnonCoBackend.domain.posts.controller;
 
+import com.AnonCoBackend.domain.posts.dto.PaginationResDto;
 import com.AnonCoBackend.domain.posts.dto.PostReqDto;
 import com.AnonCoBackend.domain.posts.dto.PostResDto;
 import com.AnonCoBackend.domain.posts.service.PostService;
@@ -35,15 +36,18 @@ public class PostController {
         return new ResponseEntity<>(new Message(id + "번 게시글을 조회합니다.", resDto), HttpStatus.OK);
     }
 
+    // 카테고리별 페이징
     @GetMapping("/category")
-    public ResponseEntity<Message> getPostByCategory(@RequestParam("categoryTitle") String categoryTitle, @RequestParam("page") int page, @RequestParam("size") int size) {
-    List<PostResDto> resDtoList = postService.getPostByCategory(categoryTitle, page, size);
-        return new ResponseEntity<>(new Message(categoryTitle + "에 해당하는 게시글을 모두 조회합니다.", resDtoList), HttpStatus.OK);
+    public ResponseEntity<Message> getPostByCategory(@RequestParam("categoryTitle") String categoryTitle,
+                                                     @RequestParam("page") int page,
+                                                     @RequestParam("size") int size) {
+        PaginationResDto<PostResDto> paginationResponse = postService.getPostByCategory(categoryTitle, page, size);
+        return new ResponseEntity<>(new Message(categoryTitle + "에 해당하는 게시글을 모두 조회합니다.", paginationResponse), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Message> updatePost(@PathVariable("id") Long id, @RequestBody PostReqDto reqDto) {
-        PostResDto resDto= postService.updatePost(id, reqDto);
+        PostResDto resDto = postService.updatePost(id, reqDto);
         return new ResponseEntity<>(new Message(id + "번 게시글이 수정되었습니다.", resDto), HttpStatus.OK);
     }
 
