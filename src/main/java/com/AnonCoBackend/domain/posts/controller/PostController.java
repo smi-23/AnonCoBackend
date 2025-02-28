@@ -41,8 +41,8 @@ public class PostController {
     public ResponseEntity<Message> getPostByCategory(@RequestParam("categoryTitle") String categoryTitle,
                                                      @RequestParam("page") int page,
                                                      @RequestParam("size") int size) {
-        PaginationResDto<PostResDto> paginationResponse = postService.getPostByCategory(categoryTitle, page, size);
-        return new ResponseEntity<>(new Message(categoryTitle + "에 해당하는 게시글을 모두 조회합니다.", paginationResponse), HttpStatus.OK);
+        PaginationResDto resDto = postService.getPostByCategory(categoryTitle, page, size);
+        return new ResponseEntity<>(new Message(categoryTitle + "에 해당하는 게시글을 모두 조회합니다.", resDto), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")

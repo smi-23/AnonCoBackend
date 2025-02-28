@@ -9,16 +9,16 @@ import java.util.List;
 @Getter
 @Builder
 @AllArgsConstructor
-public class PaginationResDto<T> {
-    private List<T> content;
+public class PaginationResDto { // 리팩토링 할 때 제네릭으로 할 지 고민 해야 함
+    private List<PostResDto> postList;
     private int totalPages;
     private long totalElements;
     private int currentPage;
     private int size;
 
-    public static <T> PaginationResDto<T> of(List<T> content, int totalPages, long totalElements, int currentPage, int size) {
-        return PaginationResDto.<T>builder()
-                .content(content)
+    public static PaginationResDto of(List<PostResDto> postList, int totalPages, long totalElements, int currentPage, int size) {
+        return PaginationResDto.builder()
+                .postList(postList)
                 .totalPages(totalPages)
                 .totalElements(totalElements)
                 .currentPage(currentPage)
