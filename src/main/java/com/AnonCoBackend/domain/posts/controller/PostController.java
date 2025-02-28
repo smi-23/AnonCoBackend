@@ -18,8 +18,8 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("")
-    public ResponseEntity<Message> createPost(@RequestBody PostReqDto reqDto, @RequestParam("topicTitle") String topicTitle) {
-        PostResDto resDto = postService.createPost(reqDto, topicTitle);
+    public ResponseEntity<Message> createPost(@RequestBody PostReqDto reqDto, @RequestParam("categoryTitle") String categoryTitle) {
+        PostResDto resDto = postService.createPost(reqDto, categoryTitle);
         return new ResponseEntity<>(new Message(resDto.getId() + "번 게시글이 생성되었습니다.", resDto), HttpStatus.CREATED);
     }
 
@@ -33,6 +33,12 @@ public class PostController {
     public ResponseEntity<Message> getPost(@PathVariable("id") Long id) {
         PostResDto resDto = postService.getPost(id);
         return new ResponseEntity<>(new Message(id + "번 게시글을 조회합니다.", resDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<Message> getPostByCategory(@RequestParam("categoryTitle") String categoryTitle, @RequestParam("page") int page, @RequestParam("size") int size) {
+    List<PostResDto> resDtoList = postService.getPostByCategory(categoryTitle, page, size);
+        return new ResponseEntity<>(new Message(categoryTitle + "에 해당하는 게시글을 모두 조회합니다.", resDtoList), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")

@@ -1,7 +1,6 @@
 package com.AnonCoBackend.domain.posts.dto;
 
 import com.AnonCoBackend.domain.posts.entity.Post;
-import com.AnonCoBackend.domain.topics.entity.Topic;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -14,7 +13,7 @@ public class PostResDto {
     private String nickName;
     private String title;
     private String content;
-    private String topic;
+    private String category;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -24,7 +23,7 @@ public class PostResDto {
                 .nickName(post.getNickName())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .topic(post.getTopic().getTitle())
+                .category(post.getCategory().getTitle())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();

@@ -1,7 +1,7 @@
 package com.AnonCoBackend.domain.posts.entity;
 
 import com.AnonCoBackend.domain.posts.dto.PostReqDto;
-import com.AnonCoBackend.domain.topics.entity.Topic;
+import com.AnonCoBackend.domain.categories.entity.Category;
 import com.AnonCoBackend.utils.PwEncoder;
 import com.AnonCoBackend.utils.Timestamp;
 import jakarta.persistence.*;
@@ -31,16 +31,16 @@ public class Post extends Timestamp {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "topic_id", referencedColumnName = "id")
-    private Topic topic;
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private Category category;
 
-    public static Post from(PostReqDto reqDto, Topic topic) {
+    public static Post from(PostReqDto reqDto, Category category) {
         return Post.builder()
                 .nickName(reqDto.getNickName())
                 .password(PwEncoder.encodePw(reqDto.getPassword()))
                 .title(reqDto.getTitle())
                 .content(reqDto.getContent())
-                .topic(topic)
+                .category(category)
                 .build();
     }
 

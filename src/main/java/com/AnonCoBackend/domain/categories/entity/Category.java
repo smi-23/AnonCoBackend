@@ -1,6 +1,6 @@
-package com.AnonCoBackend.domain.topics.entity;
+package com.AnonCoBackend.domain.categories.entity;
 
-import com.AnonCoBackend.domain.topics.dto.TopicReqDto;
+import com.AnonCoBackend.domain.categories.dto.CategoryReqDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Topic {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -21,8 +21,8 @@ public class Topic {
     @Column(nullable = false)
     String title;
 
-    public static Topic from (TopicReqDto reqDto) {
-        return Topic.builder()
+    public static Category from (CategoryReqDto reqDto) {
+        return Category.builder()
                 .title(reqDto.getTitle())
                 .build();
     }
