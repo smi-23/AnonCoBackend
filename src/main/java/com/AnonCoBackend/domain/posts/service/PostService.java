@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,8 +49,9 @@ public class PostService {
     }
 
     @Transactional
-    public PaginationResDto getPostByCategory(String categoryTitle, int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size);
+    public PaginationResDto getPostByCategory(String categoryTitle, int page, int size, String sortOrder) {
+        Sort sort = sortOrder.equals("asc") ? Sort.by("updatedAt").ascending() : Sort.by("updatedAt").descending();
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
         Page<Post> postPageByCategory = postRepository.findByCategory_Title(categoryTitle, pageable);
 
         List<PostResDto> resDtoList = postPageByCategory.stream().map(PostResDto::from).toList();
