@@ -51,9 +51,7 @@ public class PostService {
     public PaginationResDto getPostByCategory(String categoryTitle, int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Post> postPageByCategory = postRepository.findByCategory_Title(categoryTitle, pageable);
-        if (postPageByCategory.isEmpty()) {
-            throw new IllegalArgumentException("카테고리 " + categoryTitle + " 에 해당하는 게시글이 존재하지 않습니다.");
-        }
+
         List<PostResDto> resDtoList = postPageByCategory.stream().map(PostResDto::from).toList();
         log.info("카테고리 {} 의 전체 게시글 조회 - 전체 게시글 수: {}, 페이지 게시글 수: {}, 현재 페이지: {}",
                 categoryTitle,
