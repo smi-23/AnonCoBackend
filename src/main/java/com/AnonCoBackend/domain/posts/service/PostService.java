@@ -7,6 +7,7 @@ import com.AnonCoBackend.domain.posts.entity.Post;
 import com.AnonCoBackend.domain.posts.repository.PostRepository;
 import com.AnonCoBackend.domain.categories.entity.Category;
 import com.AnonCoBackend.domain.categories.repository.CategoryRepository;
+import com.AnonCoBackend.utils.PwEncoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -41,7 +42,7 @@ public class PostService {
 
     @Transactional
     public PostResDto getPost(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(id + "번 게시글이 존재하지 않습니다."));
+        Post post = findPost(id);
         log.info("{}번 게시글 조회", id);
         return PostResDto.from(post);
     }
@@ -69,7 +70,8 @@ public class PostService {
 
     @Transactional
     public PostResDto updatePost(Long id, PostReqDto reqDto) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(id + "번 게시글이 존재하지 않습니다."));
+        Post post = findPost(id);
+        checkPassword(reqDto.getPassword(), post);
         post.updatePost(reqDto);
         postRepository.save(post);
         log.info("{}번 게시글 수정", id);
@@ -77,9 +79,23 @@ public class PostService {
     }
 
     @Transactional
-    public void deletePost(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(id + "번 게시글이 존재하지 않습니다."));
+    public void deletePost(String password, Long id) {
+        log.info("password: {}  ~~비밀번호가 어떻게 넘어왔을까요~~", password);
+        Post post = findPost(id);
+        checkPassword(password, post);
         log.info("{}번 게시글 삭제", id);
         postRepository.delete(post);
+    }
+
+    public void checkPassword(String password, Post post) {
+        if (!PwEncoder.encoder.matches(password, post.getPassword())) {
+            log.info("id: {} 게시글의 비밀번호 불일치", post.getId());
+            throw new IllegalArgumentException(post.getId() + "번 포스트의 비밀번호와 일치하지 않습니다.");
+        }
+    }
+
+    public Post findPost(Long id) { // overloading으로 다양한 매개변수를 받을 수 있게할까?
+        return postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(id + "번 게시글이 존재하지 않습니다."));
     }
 }

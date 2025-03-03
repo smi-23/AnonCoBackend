@@ -3,6 +3,7 @@ package com.AnonCoBackend.domain.posts.controller;
 import com.AnonCoBackend.domain.posts.dto.PaginationResDto;
 import com.AnonCoBackend.domain.posts.dto.PostReqDto;
 import com.AnonCoBackend.domain.posts.dto.PostResDto;
+import com.AnonCoBackend.domain.posts.entity.Post;
 import com.AnonCoBackend.domain.posts.service.PostService;
 import com.AnonCoBackend.utils.Message;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/post")
@@ -52,8 +54,15 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Message> deletePost(@PathVariable("id") Long id) {
-        postService.deletePost(id);
+    public ResponseEntity<Message> deletePost(@RequestBody Map<String, String> request, @PathVariable("id") Long id) {
+        postService.deletePost(request.get("password"), id);
         return new ResponseEntity<>(new Message(id + "번 게시글이 삭제되었습니다.", null), HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/check-password")
+    public ResponseEntity<Message> checkPassword(@RequestBody Map<String, String> request, @PathVariable("id") Long id){
+        Post post = postService.findPost(id);
+        postService.checkPassword(request.get("password"), post);
+        return new ResponseEntity<>(new Message("비밀번호가 일치합니다.", null), HttpStatus.OK);
     }
 }
