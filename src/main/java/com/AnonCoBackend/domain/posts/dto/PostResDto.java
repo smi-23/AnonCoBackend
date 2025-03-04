@@ -23,7 +23,7 @@ public class PostResDto {
                 .nickName(post.getNickName())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .category(post.getCategory().getTitle())
+                .category(post.getCategory().getUrl())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();

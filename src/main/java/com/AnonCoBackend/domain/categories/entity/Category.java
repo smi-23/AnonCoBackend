@@ -21,9 +21,13 @@ public class Category {
     @Column(nullable = false)
     String title;
 
-    public static Category from (CategoryReqDto reqDto) {
+    @Column(nullable = false)
+    String url;
+
+    public static Category from(CategoryReqDto reqDto) {
         return Category.builder()
                 .title(reqDto.getTitle())
+                .url(reqDto.getUrl())
                 .build();
     }
 }

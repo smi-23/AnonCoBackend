@@ -21,8 +21,8 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("")
-    public ResponseEntity<Message> createPost(@RequestBody PostReqDto reqDto, @RequestParam("categoryTitle") String categoryTitle) {
-        PostResDto resDto = postService.createPost(reqDto, categoryTitle);
+    public ResponseEntity<Message> createPost(@RequestBody PostReqDto reqDto, @RequestParam("categoryUrl") String categoryUrl) {
+        PostResDto resDto = postService.createPost(reqDto, categoryUrl);
         return new ResponseEntity<>(new Message(resDto.getId() + "번 게시글이 생성되었습니다.", resDto), HttpStatus.CREATED);
     }
 
@@ -40,12 +40,12 @@ public class PostController {
 
     // 카테고리별 페이징
     @GetMapping("/category")
-    public ResponseEntity<Message> getPostByCategory(@RequestParam("categoryTitle") String categoryTitle,
+    public ResponseEntity<Message> getPostByCategory(@RequestParam("categoryUrl") String categoryUrl,
                                                      @RequestParam("page") int page,
                                                      @RequestParam("size") int size,
-                                                     @RequestParam(value = "sort", defaultValue = "desc")String sortOrder) {
-        PaginationResDto resDto = postService.getPostByCategory(categoryTitle, page, size, sortOrder);
-        return new ResponseEntity<>(new Message(categoryTitle + "에 해당하는 게시글을 모두 조회합니다.", resDto), HttpStatus.OK);
+                                                     @RequestParam(value = "sort", defaultValue = "desc") String sortOrder) {
+        PaginationResDto resDto = postService.getPostByCategory(categoryUrl, page, size, sortOrder);
+        return new ResponseEntity<>(new Message(categoryUrl + "에 해당하는 게시글을 모두 조회합니다.", resDto), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
@@ -61,7 +61,7 @@ public class PostController {
     }
 
     @PostMapping("/{id}/check-password")
-    public ResponseEntity<Message> checkPassword(@RequestBody Map<String, String> request, @PathVariable("id") Long id){
+    public ResponseEntity<Message> checkPassword(@RequestBody Map<String, String> request, @PathVariable("id") Long id) {
         Post post = postService.findPost(id);
         postService.checkPassword(request.get("password"), post);
         return new ResponseEntity<>(new Message("비밀번호가 일치합니다.", null), HttpStatus.OK);

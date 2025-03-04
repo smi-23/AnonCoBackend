@@ -17,11 +17,17 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Transactional
-    public void createCategory (CategoryReqDto reqDto) {
-        Optional<Category> optionalTopic = categoryRepository.findByTitle(reqDto.getTitle());
-        if(optionalTopic.isPresent()){
-            throw new IllegalArgumentException("해당 카테고리가 이미 존재합니다.");
+    public void createCategory(CategoryReqDto reqDto) {
+        Optional<Category> optionalTitle = categoryRepository.findByTitle(reqDto.getTitle());
+        if (optionalTitle.isPresent()) {
+            throw new IllegalArgumentException("해당 카테고리 타이틀이 이미 존재합니다.");
         }
+
+        Optional<Category> optionalUrl = categoryRepository.findByUrl(reqDto.getUrl());
+        if (optionalUrl.isPresent()) {
+            throw new IllegalArgumentException("해당 카테고리 URL 이미 존재합니다.");
+        }
+
         categoryRepository.save(Category.from(reqDto));
         log.info("{} 카테고리 생성", reqDto.getTitle());
     }

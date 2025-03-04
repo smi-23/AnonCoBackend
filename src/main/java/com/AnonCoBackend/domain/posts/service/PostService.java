@@ -27,8 +27,8 @@ public class PostService {
     private final CategoryRepository categoryRepository;
 
     @Transactional
-    public PostResDto createPost(PostReqDto reqDto, String categoryTitle) {
-        Category category = categoryRepository.findByTitle(categoryTitle).orElseThrow(() -> new IllegalArgumentException("해당 카테고리가 존재하지 않습니다."));
+    public PostResDto createPost(PostReqDto reqDto, String categoryUrl) {
+        Category category = categoryRepository.findByUrl(categoryUrl).orElseThrow(() -> new IllegalArgumentException("해당 카테고리가 존재하지 않습니다."));
         Post post = postRepository.save(Post.from(reqDto, category));
         log.info("{}번 게시글 생성", post.getId());
         return PostResDto.from(post);
@@ -49,14 +49,14 @@ public class PostService {
     }
 
     @Transactional
-    public PaginationResDto getPostByCategory(String categoryTitle, int page, int size, String sortOrder) {
+    public PaginationResDto getPostByCategory(String categoryUrl, int page, int size, String sortOrder) {
         Sort sort = sortOrder.equals("asc") ? Sort.by("updatedAt").ascending() : Sort.by("updatedAt").descending();
         Pageable pageable = PageRequest.of(page - 1, size, sort);
-        Page<Post> postPageByCategory = postRepository.findByCategory_Title(categoryTitle, pageable);
+        Page<Post> postPageByCategory = postRepository.findByCategory_Url(categoryUrl, pageable);
 
         List<PostResDto> resDtoList = postPageByCategory.stream().map(PostResDto::from).toList();
         log.info("카테고리 {} 의 전체 게시글 조회 - 전체 게시글 수: {}, 페이지 게시글 수: {}, 현재 페이지: {}",
-                categoryTitle,
+                categoryUrl,
                 postPageByCategory.getTotalElements(),
                 postPageByCategory.getNumberOfElements(),
                 postPageByCategory.getNumber() + 1);

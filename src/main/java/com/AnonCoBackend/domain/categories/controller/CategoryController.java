@@ -18,7 +18,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping("")
-    public ResponseEntity<Message> createCategory (@RequestBody CategoryReqDto reqDto) {
+    public ResponseEntity<Message> createCategory(@RequestBody CategoryReqDto reqDto) {
         categoryService.createCategory(reqDto);
         return new ResponseEntity<>(new Message(reqDto.getTitle() + " 카테고리가 생성되었습니다.", null), HttpStatus.CREATED);
     }

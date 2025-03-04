@@ -5,4 +5,5 @@ import lombok.Getter;
 @Getter
 public class CategoryReqDto {
     String title;
+    String url;
 }
