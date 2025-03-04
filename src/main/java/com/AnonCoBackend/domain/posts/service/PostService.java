@@ -80,7 +80,6 @@ public class PostService {
 
     @Transactional
     public void deletePost(String password, Long id) {
-        log.info("password: {}  ~~비밀번호가 어떻게 넘어왔을까요~~", password);
         Post post = findPost(id);
         checkPassword(password, post);
         log.info("{}번 게시글 삭제", id);

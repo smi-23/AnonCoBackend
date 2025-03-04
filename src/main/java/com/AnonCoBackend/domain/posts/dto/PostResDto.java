@@ -1,13 +1,13 @@
 package com.AnonCoBackend.domain.posts.dto;
 
 import com.AnonCoBackend.domain.posts.entity.Post;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Builder
-@AllArgsConstructor
 public class PostResDto {
     private Long id;
     private String nickName;

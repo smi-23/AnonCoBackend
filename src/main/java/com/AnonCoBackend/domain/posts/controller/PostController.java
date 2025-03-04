@@ -41,7 +41,7 @@ public class PostController {
     // 카테고리별 페이징
     @GetMapping("/category")
     public ResponseEntity<Message> getPostByCategory(@RequestParam("categoryUrl") String categoryUrl,
-                                                     @RequestParam("page") int page,
+                                                     @RequestParam(value = "page", defaultValue = "1") int page,
                                                      @RequestParam("size") int size,
                                                      @RequestParam(value = "sort", defaultValue = "desc") String sortOrder) {
         PaginationResDto resDto = postService.getPostByCategory(categoryUrl, page, size, sortOrder);

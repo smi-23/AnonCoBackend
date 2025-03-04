@@ -1,11 +1,15 @@
 package com.AnonCoBackend.domain.posts.entity;
 
+import com.AnonCoBackend.domain.comment.entity.Comment;
 import com.AnonCoBackend.domain.posts.dto.PostReqDto;
 import com.AnonCoBackend.domain.categories.entity.Category;
 import com.AnonCoBackend.utils.PwEncoder;
 import com.AnonCoBackend.utils.Timestamp;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,9 +34,16 @@ public class Post extends Timestamp {
     @Column(nullable = false)
     private String content;
 
+    @Builder.Default
+    @Column(nullable = false)
+    private Long commentCount = 0L;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> commentList;
 
     public static Post from(PostReqDto reqDto, Category category) {
         return Post.builder()
@@ -51,5 +62,13 @@ public class Post extends Timestamp {
         if (reqDto.getContent() != null) {
             this.content = reqDto.getContent();
         }
+    }
+
+    public void increaseCommentCount() {
+        this.commentCount++;
+    }
+
+    public void decreaseCommentCount() {
+        if (this.commentCount > 0) this.commentCount--;
     }
 }
