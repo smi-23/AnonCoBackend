@@ -13,7 +13,8 @@ public class PostResDto {
     private String nickName;
     private String title;
     private String content;
-    private String category;
+    private String categoryTitle;
+    private Long commentCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -23,7 +24,8 @@ public class PostResDto {
                 .nickName(post.getNickName())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .category(post.getCategory().getUrl())
+                .categoryTitle(post.getCategory().getTitle())
+                .commentCount(post.getCommentCount())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();

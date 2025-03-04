@@ -53,14 +53,17 @@ public class PostService {
         Sort sort = sortOrder.equals("asc") ? Sort.by("updatedAt").ascending() : Sort.by("updatedAt").descending();
         Pageable pageable = PageRequest.of(page - 1, size, sort);
         Page<Post> postPageByCategory = postRepository.findByCategory_Url(categoryUrl, pageable);
+        Category category = categoryRepository.findByUrl(categoryUrl)
+                .orElseThrow(() -> new IllegalArgumentException("해당 카테고리를 찾을 수 없습니다."));
 
         List<PostResDto> resDtoList = postPageByCategory.stream().map(PostResDto::from).toList();
         log.info("카테고리 {} 의 전체 게시글 조회 - 전체 게시글 수: {}, 페이지 게시글 수: {}, 현재 페이지: {}",
-                categoryUrl,
+                category.getTitle(),
                 postPageByCategory.getTotalElements(),
                 postPageByCategory.getNumberOfElements(),
                 postPageByCategory.getNumber() + 1);
         return PaginationResDto.of(
+                category.getTitle(),
                 resDtoList,
                 postPageByCategory.getTotalPages(),
                 postPageByCategory.getTotalElements(),
